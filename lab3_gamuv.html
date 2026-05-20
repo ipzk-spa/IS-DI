@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ЛР3 — шифр гамування</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+    h1 { font-size: 18px; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    textarea, input[type="text"] {
+      width: 100%;
+      margin-top: 5px;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+    fieldset { margin-top: 12px; }
+    button {
+      margin-top: 12px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .result { margin-top: 16px; }
+    .result p { word-break: break-all; }
+  </style>
+</head>
+<body>
+
+  <h1>Шифр гамування (варіант 13)</h1>
+  <p id="alphabet"></p>
+
+  <label>
+    Текст
+    <textarea id="text" rows="3">Таким чином, інформація зберігається і передається на матеріальних носіях</textarea>
+  </label>
+
+  <label>
+    Гасло (прізвище)
+    <input type="text" id="gamma" value="Степанчук">
+  </label>
+
+  <fieldset>
+    <legend>Формула</legend>
+    <label><input type="radio" name="formula" value="add" checked> S = (O + Γ) mod N</label><br>
+    <label><input type="radio" name="formula" value="subOG"> S = (O − Γ) mod N</label><br>
+    <label><input type="radio" name="formula" value="subGO"> S = (Γ − O) mod N</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Режим</legend>
+    <label><input type="radio" name="mode" value="encrypt" checked> Шифрувати</label>
+    <label><input type="radio" name="mode" value="decrypt"> Розшифрувати</label>
+  </fieldset>
+
+  <button type="button" onclick="run()">Виконати</button>
+
+  <div class="result">
+    <p><b>Після очищення:</b> <span id="clean"></span></p>
+    <p><b>Гама:</b> <span id="gammaOut"></span></p>
+    <p><b>Результат:</b> <span id="output"></span></p>
+  </div>
+
+  <script>
+    var alphabet = "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя";
+    var N = alphabet.length;
+
+    document.getElementById("alphabet").textContent = "Алфавіт (N = " + N + "): " + alphabet;
+
+    function clean(text) {
+      text = text.toLowerCase();
+      var result = "";
+      for (var i = 0; i < text.length; i++) {
+        if (alphabet.indexOf(text[i]) !== -1) {
+          result += text[i];
+        }
+      }
+      return result;
+    }
+
+    function makeGamma(gamma, length) {
+      var result = "";
+      while (result.length < length) {
+        result += gamma;
+      }
+      return result.slice(0, length);
+    }
+
+    function getFormula() {
+      var value = document.querySelector('input[name="formula"]:checked').value;
+      if (value === "add") {
+        return {
+          encrypt: function(o, g) { return (o + g) % N; },
+          decrypt: function(s, g) { return (s - g + N) % N; }
+        };
+      }
+      if (value === "subOG") {
+        return {
+          encrypt: function(o, g) { return (o - g + N) % N; },
+          decrypt: function(s, g) { return (s + g) % N; }
+        };
+      }
+      return {
+        encrypt: function(o, g) { return (g - o + N) % N; },
+        decrypt: function(s, g) { return (g - s + N) % N; }
+      };
+    }
+
+    function transform(text, gamma, mode) {
+      var formula = getFormula();
+      var fn = (mode === "encrypt") ? formula.encrypt : formula.decrypt;
+      var result = "";
+
+      for (var i = 0; i < text.length; i++) {
+        var o = alphabet.indexOf(text[i]);
+        var g = alphabet.indexOf(gamma[i]);
+        result += alphabet[fn(o, g)];
+      }
+
+      return result;
+    }
+
+    function run() {
+      var text = clean(document.getElementById("text").value);
+      var gammaRaw = clean(document.getElementById("gamma").value);
+      var mode = document.querySelector('input[name="mode"]:checked').value;
+      var gamma = makeGamma(gammaRaw, text.length);
+
+      document.getElementById("clean").textContent = text || "—";
+      document.getElementById("gammaOut").textContent = gamma || "—";
+
+      if (!text || !gammaRaw) {
+        document.getElementById("output").textContent = "—";
+        return;
+      }
+
+      document.getElementById("output").textContent = transform(text, gamma, mode);
+    }
+  </script>
+
+</body>
+</html>
