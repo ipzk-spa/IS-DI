@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ЛР6 — СтальМаш</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <h1>ТОВ «Завод „СтальМаш”»</h1>
+    <p class="sub">Дискреційна політика безпеки</p>
+
+    <section id="login" class="panel on">
+      <h2>Вхід</h2>
+      <label>Логін <input id="in-user"></label>
+      <label>Пароль <input id="in-pass" type="password"></label>
+      <div class="btns">
+        <button type="button" id="btn-in">Увійти</button>
+      </div>
+      <p id="in-err" class="err" hidden></p>
+    </section>
+
+    <section id="register" class="panel">
+      <h2>Реєстрація</h2>
+      <label>Логін <input id="reg-user"></label>
+      <label>Пароль <input id="reg-pass" type="password"></label>
+      <label>Код доступу <input id="reg-code" type="password"></label>
+      <button type="button" id="btn-code">Підтвердити код</button>
+      <div id="reg-rights"></div>
+      <div class="btns">
+        <button type="button" id="btn-reg-save">Зареєструвати</button>
+        <button type="button" class="btn-main">Назад</button>
+      </div>
+      <p id="reg-msg" hidden></p>
+    </section>
+
+    <section id="check" class="panel">
+      <h2>Перевірка прав</h2>
+      <p>Користувач: <b id="chk-name"></b></p>
+      <label>Перевірити користувача
+        <select id="chk-user"></select>
+      </label>
+      <div id="chk-objects" class="objects"></div>
+      <div class="btns">
+        <button type="button" id="btn-chk">Перевірити</button>
+        <button type="button" id="btn-mat-go">Матриця</button>
+        <button type="button" id="btn-reg-go" hidden>Додати користувача</button>
+        <button type="button" id="btn-logout">Вийти</button>
+      </div>
+      <div id="chk-out" class="box" hidden></div>
+    </section>
+
+    <section id="matrix" class="panel">
+      <h2>Матриця доступу</h2>
+      <div id="mat-table"></div>
+      <button type="button" class="btn-main">Назад</button>
+    </section>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
