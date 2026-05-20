@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 4</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header><h1>Lab 4</h1></header>
+
+  <main>
+    <details class="task" id="task1">
+      <summary><span class="task-tag">task1</span> Ідентифікація користувачів на основі MD5</summary>
+
+      <details class="section">
+        <summary>Реєстрація та вхід</summary>
+        <div class="panel grid-2">
+          <div class="box">
+            <h3>Реєстрація</h3>
+            <label>Логін <input type="text" id="reg-login" placeholder="Петро"></label>
+            <label>Пароль <input type="password" id="reg-pass"></label>
+            <button type="button" class="btn" id="btn-register">Створити користувача</button>
+            <p id="reg-msg" class="msg"></p>
+          </div>
+          <div class="box">
+            <h3>Аутентифікація (вхід)</h3>
+            <label>Логін <input type="text" id="auth-login"></label>
+            <label>Пароль <input type="password" id="auth-pass"></label>
+            <button type="button" class="btn" id="btn-auth">Увійти</button>
+            <p id="auth-msg" class="msg"></p>
+          </div>
+        </div>
+      </details>
+
+      <details class="section">
+        <summary>MD5 (пароль + сіль)</summary>
+        <div class="panel box">
+          <label>Пароль <input type="text" id="md5-pass" value="mypassword"></label>
+          <label>Сіль <input type="text" id="md5-salt" placeholder="наприклад a3f2b1"></label>
+          <div class="row">
+            <button type="button" class="btn" id="btn-md5-salt">Згенерувати сіль</button>
+            <button type="button" class="btn" id="btn-md5">Обчислити хеш</button>
+          </div>
+          <p class="mono">MD5(пароль + сіль) = <code id="md5-out">—</code></p>
+          <p id="md5-msg" class="msg"></p>
+        </div>
+      </details>
+    </details>
+
+    <details class="task" id="task2">
+      <summary><span class="task-tag">task2</span> Програмна реалізація RSA</summary>
+      <div class="panel">
+        <div class="box">
+          <h3>Шифрування</h3>
+          <div class="grid-2">
+            <label>p <input type="number" id="rsa-p" value="3" min="2"></label>
+            <label>q <input type="number" id="rsa-q" value="11" min="2"></label>
+          </div>
+          <label>Повідомлення (A–Z, пробіл) <input type="text" id="rsa-msg" value="CAB"></label>
+          <div class="row">
+            <button type="button" class="btn" id="btn-rsa-encrypt">Зашифрувати</button>
+            <button type="button" class="btn btn-alt" id="btn-rsa-demo">Демо</button>
+          </div>
+          <label>Результат шифрування <input type="text" id="rsa-cipher-out" readonly></label>
+          <pre id="rsa-keys" class="mono">Натисніть «Зашифрувати».</pre>
+        </div>
+
+        <div class="box">
+          <h3>Розшифрування</h3>
+          <p class="hint">Ті самі p і q. Шифротекст — числа через пробіл (можна вставити з результату вище).</p>
+          <label>Шифротекст <input type="text" id="rsa-cipher-in" placeholder="9 1 29"></label>
+          <button type="button" class="btn" id="btn-rsa-decrypt">Розшифрувати</button>
+          <label>Розшифровано <input type="text" id="rsa-plain" readonly></label>
+        </div>
+      </div>
+    </details>
+
+    <details class="task" id="task3">
+      <summary><span class="task-tag">task3</span> Водяні знаки LSB на зображенні</summary>
+      <div class="panel">
+        <p id="lsb-capacity-text" class="hint">Завантажте зображення.</p>
+        <div class="grid-2">
+          <div class="box">
+            <label>Зображення <input type="file" id="lsb-image" accept="image/png,image/bmp,image/*"></label>
+            <label>Текст <textarea id="lsb-text" rows="3" placeholder="Ваш текст..."></textarea></label>
+            <div class="row">
+              <button type="button" class="btn" id="btn-lsb-hide">Сховати (Encode)</button>
+              <button type="button" class="btn btn-alt" id="btn-lsb-extract">Витягти (Decode)</button>
+            </div>
+            <a id="lsb-download" class="btn hidden" download="stego.png">Завантажити PNG</a>
+            <p id="lsb-msg" class="msg"></p>
+          </div>
+          <div class="previews">
+            <figure><figcaption>Оригінал</figcaption><canvas id="canvas-src"></canvas></figure>
+            <figure><figcaption>Після LSB</figcaption><canvas id="canvas-out"></canvas></figure>
+          </div>
+        </div>
+        <label>Витягнутий текст <textarea id="lsb-extracted" rows="2" readonly></textarea></label>
+      </div>
+    </details>
+
+    <section class="db-block">
+      <h2>База користувачів</h2>
+      <table id="users-table">
+        <thead><tr><th>Логін</th><th>Сіль</th><th>MD5-хеш</th></tr></thead>
+        <tbody>
+          <tr class="empty"><td colspan="3">Порожньо</td></tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-alt" id="btn-clear-users">Очистити базу</button>
+    </section>
+  </main>
+
+  <footer>
+    <span>Spag Co.</span>
+    <span class="mark" title="Оригінальність">◎</span>
+  </footer>
+
+  <script src="md5.js"></script>
+  <script src="rsa.js"></script>
+  <script src="lsb.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
